@@ -1,6 +1,6 @@
 # coding=utf-8
 import sql
-
+import time
 
 class activity:
     def __init__(self,act_id):
@@ -21,19 +21,19 @@ def create_act(userid,content):
     else:
         title=l[0]
         remark=l[1]
-        act_id= sql.get_max_actid() + 1
-        act= activity.activity(act_id)
+        act_id= sql.mysql().get_max_actid() + 1
+        act= activity(act_id)
         act.title=title
-        act.date=get_time()
+        act.date=time.time()
         act.remark=remark
         # 插入表
         act.id_list.append(userid)
         act.create_userid=userid
-        sql.insert_act(act)
+        sql.mysql().insert_act(act)
         # 更新user表
-        u= sql.select_user(userid)
+        u= sql.mysql().select_user(userid)
         u.create_act_list.append(act_id)
-        sql.update_user(u, flag=0)
+        sql.mysql().update_user(u, flag=0)
         return str(act_id)
 
 
@@ -48,14 +48,14 @@ def show_act(act):
 
 
 def join_act(userid,act_id):
-    act= sql.select_act(act_id)
+    act= sql.mysql().select_act(act_id)
     if act==None:
         return '没有此活动号,请确认活动号！'
     if userid in act.id_list:
         return '你已报名此活动！'
     act.id_list.append(userid)
-    sql.update_act(act, id_list=True)
-    u= sql.select_user(userid)
+    sql.mysql().update_act(act, id_list=True)
+    u= sql.mysql().select_user(userid)
     u.join_act_list.append(act_id)
-    sql.update_user(u, flag=1)
+    sql.mysql().update_user(u, flag=1)
     return show_act(act)

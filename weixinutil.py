@@ -5,7 +5,7 @@ import urllib2
 from Contant import APPID,APPSECRET,MENU
 import json
 
-access_token=""
+access_token="I6-cIxDex7duOdC2guHhDWQftd9doaFw6GOo_JoSj3EOqvtZ5MOUqbgwWzglNL-yPZvzf3RKVqFpDQz9d9q0L1TnOoHJCWAQa4jKk27HSRsYXFaAGAFEM"
 
 
 def update_token():
@@ -21,18 +21,21 @@ def update_token():
 
 
 def update_menu():
-    headers = {
-        'Content-Type', 'application/json',
-        'encoding', 'utf-8'
-    }
+    # headers = {
+    #     'Content-Type': 'application/json',
+    #     'encoding':'utf-8'
+    # }
+    # print access_token
     url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s"%access_token
-    req=urllib2.Request(url,headers=headers)
+    req=urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json')
+    req.add_header('encoding', 'utf-8')
     response=urllib2.urlopen(req,json.dumps(MENU,ensure_ascii=False))  # 从python数据类型转换为json类型的字符串
     info = json.loads(response.read())
-    errcode=info.get('errcode'==0)
+    errcode=info.get('errcode')
     if errcode==0:
         print '更新菜单成功'
-    elif errcode==40014:
+    elif errcode==40014 or errcode==41001:
         update_token()
         update_menu()
     else:
@@ -66,11 +69,10 @@ def get_mutiluser_info(userid_list):
     }
     for userid in userid_list:
         dic_json[userid_list].append({'openid':userid, "lang": "zh-CN"})
-    headers = {
-        'Content-Type', 'application/json',
-        'encoding', 'utf-8'
-    }
-    req=urllib2.Request(url,headers=headers)
+
+    req=urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json')
+    req.add_header('encoding', 'utf-8')
     response=urllib2.urlopen(req,json.dumps(dic_json,ensure_ascii=False))
     info=json.loads(response.read())
     if 'errcode' in info.keys():
@@ -88,3 +90,7 @@ def get_mutiluser_info(userid_list):
                 nickname= user.get('nickname')
                 name_dic[openid]=nickname
         return name_dic
+
+
+if __name__ == '__main__':
+    update_menu()
