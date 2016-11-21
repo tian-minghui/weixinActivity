@@ -14,6 +14,14 @@ sae.const.MYSQL_HOST_S  # 从库域名（只读）
 '''
 
 
+def intlist_to_strlist(intlist):
+    return [str(i) for i in intlist]
+
+
+def strlist_to_intlist(strlist):
+    return [int(i) for i in strlist]
+
+
 class mysql:
     def __init__(self):
         try:
@@ -41,7 +49,7 @@ class mysql:
         self.conn.close()
 
     def insert_act(self,act):
-        str_id_list = ' '.join(act.id_list)
+        str_id_list = ' '.join(intlist_to_strlist(act.id_list))
         sql = "insert into Activity VALUE " "(%d,'%s','%s',%f,%d,'%s','%s')" \
               % (act.act_id, act.create_userid, act.title, act.date, act.num, str_id_list, act.remark)
         print sql
@@ -88,8 +96,8 @@ class mysql:
         return act
 
     def insert_user(self,u):
-        str_act_list = ' '.join(u.create_act_list)
-        str_join_list = ' '.join(u.join_act_list)
+        str_act_list = ' '.join(intlist_to_strlist(u.create_act_list))
+        str_join_list = ' '.join(intlist_to_strlist(u.join_act_list))
         sql = "insert into user VALUE ('%s','%f','%s','%s',%d,%d)" % (
         u.user_id, u.subscribe_date, str_act_list, str_join_list, u.state, u.last_act_id)
         print sql
@@ -103,22 +111,22 @@ class mysql:
         result = self.cur.fetchall()[0]
         u = user.user(user_id, float(result[1]))
         # u.subscribe_date=result[1]
-        u.create_act_list = result[2].split()
-        u.join_act_list = result[3].split()
+        u.create_act_list = strlist_to_intlist(result[2].split())
+        u.join_act_list = strlist_to_intlist(result[3].split())
         u.state = int(result[4])
         u.last_act_id = int(result[5])
         self.close()
         return u
 
-    def update_user(self,u, flag):
+    def update_user(self,u, flag=0):
         # flag=0更新create_act_list   flag=1更新join_act_list
         if flag == 0:
-            str_act_list = ' '.join(u.create_act_list)
-            sql = "update user set create_act_list='%s', where user_id=%d" % (str_act_list, u.user_id)
+            str_act_list = ' '.join(intlist_to_strlist(u.create_act_list))
+            sql = "update user set create_act_list='%s',last_act_id=%d where user_id='%s'" % (str_act_list, u.create_act_list[-1],u.user_id)
             self.cur.execute(sql)
         elif flag == 1:
-            str_join_list = ' '.join(u.join_act_list)
-            sql = "update user set join_act_list='%s', where user_id=%d" % (str_join_list, u.user_id)
+            str_join_list = ' '.join(intlist_to_strlist(u.join_act_list))
+            sql = "update user set join_act_list='%s',last_act_id=%d where user_id='%s'" % (str_join_list,u.join_act_list[-1], u.user_id)
             self.cur.execute(sql)
         self.conn.commit()
         self.close()
@@ -131,9 +139,11 @@ class mysql:
 
 
 if __name__ == '__main__':
-    print mysql().get_max_actid()
-    # u= mysql().select_user('o6ngQv5DAxoOoABubGsPCYLynFFc')
-    # print u.user_id,u.subscribe_date,u.create_act_list
+    # print mysql().get_max_actid()
+    u= mysql().select_user('o6ngQv5DAxoOoABubGsPCYLynFFc')
+    u.create_act_list.append(4)
+    print u.create_act_list
+    mysql().update_user(u)
 
 # def create_act_table():
 #     sql='''create table IF NOT EXISTS Activity(
