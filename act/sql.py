@@ -1,6 +1,6 @@
 # coding=utf-8
 import MySQLdb
-from sae.const import MYSQL_DB,MYSQL_USER,MYSQL_PASS,MYSQL_HOST,MYSQL_PORT
+
 
 import activity, user
 
@@ -16,14 +16,25 @@ sae.const.MYSQL_HOST_S  # 从库域名（只读）
 
 class mysql:
     def __init__(self):
-        self.conn = MySQLdb.connect(
-            host=MYSQL_HOST,
-            port=int(MYSQL_PORT),
-            user=MYSQL_USER,
-            passwd=MYSQL_PASS,
-            db=MYSQL_DB,
-        )
-        self.cur = self.conn.cursor()
+        try:
+            from sae.const import MYSQL_DB, MYSQL_USER, MYSQL_PASS, MYSQL_HOST, MYSQL_PORT
+            self.conn = MySQLdb.connect(
+                host=MYSQL_HOST,
+                port=int(MYSQL_PORT),
+                user=MYSQL_USER,
+                passwd=MYSQL_PASS,
+                db=MYSQL_DB,
+            )
+            self.cur = self.conn.cursor()
+        except:
+            self.conn = MySQLdb.connect(
+                host='w.rdc.sae.sina.com.cn',
+                port=3307,
+                user='ylxxyj451l',
+                passwd='444y0yzwzlx125i5m2wxlyll25mywyhx2yj4h1mk',
+                db='app_activity',
+            )
+            self.cur = self.conn.cursor()
 
     def close(self):
         self.cur.close()
@@ -31,8 +42,8 @@ class mysql:
 
     def insert_act(self,act):
         str_id_list = ' '.join(act.id_list)
-        sql = "insert into Activity(act_id,create_userid,title,date,num,id_list,remark) VALUE ('%d','%s','%s','%f','%d','%s','%s')" % (
-            act.act_id, act.create_userid, act.title, act.date, act.num, str_id_list, act.remark)
+        sql = "insert into Activity VALUE " "(%d,'%s','%s',%f,%d,'%s','%s')" \
+              % (act.act_id, act.create_userid, act.title, act.date, act.num, str_id_list, act.remark)
         self.cur.execute(sql)
         self.conn.commit()
         self.close()
@@ -40,8 +51,9 @@ class mysql:
     def get_max_actid(self):
         sql = 'select max(act_id) from Activity'
         count = self.cur.execute(sql)
-        if count == 0:
-            return 0
+        # print count
+        if count == 1:
+            return 1
         id = self.cur.fetchall()[0][0]
         self.close()
         return int(id)
@@ -79,6 +91,7 @@ class mysql:
         str_join_list = ' '.join(u.join_act_list)
         sql = "insert into user VALUE ('%s','%f','%s','%s',%d,%d)" % (
         u.user_id, u.subscribe_date, str_act_list, str_join_list, u.state, u.last_act_id)
+        print sql
         self.cur.execute(sql)
         self.conn.commit()
         self.close()
@@ -116,6 +129,12 @@ class mysql:
         self.cur.execute(sql)
         self.conn.commit()
         self.close()
+
+
+if __name__ == '__main__':
+    u=user.user(2,121548)
+    print mysql().get_max_actid()
+
 # def create_act_table():
 #     sql='''create table IF NOT EXISTS Activity(
 # act_id int(10) NOT NULL UNIQUE ,

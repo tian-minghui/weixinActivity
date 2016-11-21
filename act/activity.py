@@ -2,6 +2,7 @@
 import sql
 import time
 
+
 class activity:
     def __init__(self,act_id):
         self.act_id=act_id   # 活动id
@@ -16,11 +17,11 @@ class activity:
 def create_act(userid,content):
     # 创建活动
     l=content.split()
-    if len(l)!=2:
+    if len(l)!=3:
         return '你输入的信息格式有误！'
     else:
-        title=l[0]
-        remark=l[1]
+        title=l[1]
+        remark=l[2]
         act_id= sql.mysql().get_max_actid() + 1
         act= activity(act_id)
         act.title=title
@@ -47,8 +48,11 @@ def show_act(act):
     return msg
 
 
-def join_act(userid,act_id):
-    act= sql.mysql().select_act(act_id)
+def join_act(userid,content):
+    l=content.split()
+    if len(l)!=2:
+        return '你输入的信息格式有误！'
+    act= sql.mysql().select_act(int(l[1]))
     if act==None:
         return '没有此活动号,请确认活动号！'
     if userid in act.id_list:
