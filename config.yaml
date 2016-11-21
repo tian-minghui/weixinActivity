@@ -1,0 +1,11 @@
+name: weixincheck
+version: 1
+
+libraries:
+- name: webpy
+  version: "0.36"
+
+- name: web.py
+  version: "0.38"
+
+...
