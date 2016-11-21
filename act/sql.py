@@ -18,10 +18,10 @@ class mysql:
     def __init__(self):
         self.conn = MySQLdb.connect(
             host=MYSQL_HOST,
-            port=3307,
+            port=int(MYSQL_PORT),
             user=MYSQL_USER,
             passwd=MYSQL_PASS,
-            db=MYSQL_DB
+            db=MYSQL_DB,
         )
         self.cur = self.conn.cursor()
 
@@ -31,8 +31,8 @@ class mysql:
 
     def insert_act(self,act):
         str_id_list = ' '.join(act.id_list)
-        sql = "insert into Activity VALUE (%d,'%s','%s',%f,%d,'%s','%s')" % (
-        act.act_id, act.create_userid, act.title, act.date, act.num, str_id_list, act.remark)
+        sql = "insert into Activity(act_id,create_userid,title,date,num,id_list,remark) VALUE ('%d','%s','%s','%f','%d','%s','%s')" % (
+            act.act_id, act.create_userid, act.title, act.date, act.num, str_id_list, act.remark)
         self.cur.execute(sql)
         self.conn.commit()
         self.close()
