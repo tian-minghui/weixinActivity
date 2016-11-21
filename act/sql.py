@@ -2,7 +2,7 @@
 import MySQLdb
 from sae.const import MYSQL_DB,MYSQL_USER,MYSQL_PASS,MYSQL_HOST,MYSQL_PORT
 
-from act import activity, user
+import activity, user
 
 '''
 sae.const.MYSQL_DB      # 数据库名
