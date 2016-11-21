@@ -18,7 +18,10 @@ def create_act(userid,content):
     # 创建活动
     l=content.split()
     if len(l)!=3:
-        return '你输入的信息格式有误！%s'%str(l)
+        msg=str(len(l))
+        for i in l:
+            msg+=i
+        return '你输入的信息格式有误！%s'%msg
     else:
         title=l[1]
         remark=l[2]
