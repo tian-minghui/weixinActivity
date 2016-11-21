@@ -37,7 +37,7 @@ def resp_event(render,event,myid,userid):
 
 
 def resp_text(render,myid,userid,content):
-    content=content.strip()
+    # content=content.strip()
     return render.reply_text(userid,myid,int(time.time()),'test')
     # if content.startswith('new'):
     #     msg=activity.create_act(userid,content[3:])
