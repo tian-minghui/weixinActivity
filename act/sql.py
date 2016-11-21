@@ -1,5 +1,5 @@
 # coding=utf-8
-import MYSQLdb
+import MySQLdb
 from sae.const import MYSQL_DB,MYSQL_USER,MYSQL_PASS,MYSQL_HOST,MYSQL_PORT
 
 from act import activity, user
@@ -13,7 +13,7 @@ sae.const.MYSQL_PORT    # 端口，类型为<type 'str'>，请根据框架要求
 sae.const.MYSQL_HOST_S  # 从库域名（只读）
 '''
 
-conn=MYSQLdb.connect(
+conn=MySQLdb.connect(
     host=MYSQL_HOST,
     port=MYSQL_PORT,
     user=MYSQL_USER,
@@ -25,24 +25,24 @@ cur=conn.cursor()
 
 def create_act_table():
     sql='''create table IF NOT EXISTS Activity(
-act_id int NOT NULL UNIQUE ,
-create_userid VARCHAR ,
+act_id int(10) NOT NULL UNIQUE ,
+create_userid VARCHAR(50) ,
 title VARCHAR(30) not NULL ,
 date FLOAT NOT null,
 num int not NULL ,
-id_list VARCHAR,
-remark VARCHAR(200))'''
+id_list TEXT,
+remark varchar(100))'''
     cur.execute(sql)
 
 
 def create_user_table():
     sql='''create table if not EXISTS user(
-user_id varchar not NULL ,
+user_id varchar(50) not NULL ,
 subscribe_date FLOAT ,
-create_act_list VARCHAR,
-join_act_list VARCHAR,
+create_act_list TEXT ,
+join_act_list TEXT ,
 state int,
-last_act_id VARCHAR )'''
+last_act_id VARCHAR(50))'''
     cur.execute(sql)
 
 
