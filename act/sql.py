@@ -50,12 +50,12 @@ class mysql:
         self.close()
 
     def get_max_actid(self):
+        # 默认表不为空
         sql = 'select max(act_id) from Activity'
-        count = self.cur.execute(sql)
-        # print count
-        if count == 1:
-            return 0
+        self.cur.execute(sql)
         id = self.cur.fetchall()[0][0]
+        # print type(id)
+        # print id
         self.close()
         return int(id)
 
@@ -131,8 +131,9 @@ class mysql:
 
 
 if __name__ == '__main__':
-    u= mysql().select_user('o6ngQv5DAxoOoABubGsPCYLynFFc')
-    print u.user_id,u.subscribe_date,u.create_act_list
+    print mysql().get_max_actid()
+    # u= mysql().select_user('o6ngQv5DAxoOoABubGsPCYLynFFc')
+    # print u.user_id,u.subscribe_date,u.create_act_list
 
 # def create_act_table():
 #     sql='''create table IF NOT EXISTS Activity(
