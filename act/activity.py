@@ -18,7 +18,7 @@ def create_act(userid,content):
     # 创建活动
     l=content.split()
     if len(l)!=3:
-        return '你输入的信息格式有误！'
+        return '你输入的信息格式有误！%s'%len(l)
     else:
         title=l[1]
         remark=l[2]
