@@ -32,6 +32,7 @@ class mysql:
                 user=MYSQL_USER,
                 passwd=MYSQL_PASS,
                 db=MYSQL_DB,
+                charset='utf8'
             )
             self.cur = self.conn.cursor()
         except:
@@ -41,6 +42,7 @@ class mysql:
                 user='ylxxyj451l',
                 passwd='444y0yzwzlx125i5m2wxlyll25mywyhx2yj4h1mk',
                 db='app_activity',
+                charset='utf8'
             )
             self.cur = self.conn.cursor()
 
