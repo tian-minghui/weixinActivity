@@ -15,7 +15,7 @@ sae.const.MYSQL_HOST_S  # 从库域名（只读）
 
 conn=MySQLdb.connect(
     host=MYSQL_HOST,
-    port=MYSQL_PORT,
+    port=3307,
     user=MYSQL_USER,
     passwd=MYSQL_PASS,
     db=MYSQL_DB
