@@ -28,6 +28,7 @@ def create_act(userid,content):
         act_id= sql.mysql().get_max_actid() + 1
         act= activity(act_id)
         act.title=title
+        act.num=1
         act.date=time.time()
         act.remark=remark
         # 插入表

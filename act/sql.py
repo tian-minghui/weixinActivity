@@ -44,7 +44,8 @@ class mysql:
         str_id_list = ' '.join(act.id_list)
         sql = "insert into Activity VALUE " "(%d,'%s','%s',%f,%d,'%s','%s')" \
               % (act.act_id, act.create_userid, act.title, act.date, act.num, str_id_list, act.remark)
-        self.cur.execute(sql)
+        print sql
+        print self.cur.execute(sql)
         self.conn.commit()
         self.close()
 
@@ -53,7 +54,7 @@ class mysql:
         count = self.cur.execute(sql)
         # print count
         if count == 1:
-            return 1
+            return 0
         id = self.cur.fetchall()[0][0]
         self.close()
         return int(id)
@@ -113,13 +114,11 @@ class mysql:
         # flag=0更新create_act_list   flag=1更新join_act_list
         if flag == 0:
             str_act_list = ' '.join(u.create_act_list)
-            sql = "update user set create_act_list='%s',last_act_id=%d where user_id=%d" % (
-            str_act_list, u.create_act_list[-1], u.user_id)
+            sql = "update user set create_act_list='%s', where user_id=%d" % (str_act_list, u.user_id)
             self.cur.execute(sql)
         elif flag == 1:
             str_join_list = ' '.join(u.join_act_list)
-            sql = "update user set join_act_list='%s',last_act_id=%d where user_id=%d" % (
-            str_join_list, u.join_act_list[-1], u.user_id)
+            sql = "update user set join_act_list='%s', where user_id=%d" % (str_join_list, u.user_id)
             self.cur.execute(sql)
         self.conn.commit()
         self.close()
@@ -132,8 +131,8 @@ class mysql:
 
 
 if __name__ == '__main__':
-    u=user.user(2,121548)
-    print mysql().get_max_actid()
+    u= mysql().select_user('o6ngQv5DAxoOoABubGsPCYLynFFc')
+    print u.user_id,u.subscribe_date,u.create_act_list
 
 # def create_act_table():
 #     sql='''create table IF NOT EXISTS Activity(
