@@ -32,13 +32,14 @@ class WeixinRequest:  # 响应请求的类
         msgtype=xml.find("MsgType").text
         userid=xml.find("FromUserName").text
         myid=xml.find("ToUserName").text
+
         if msgtype=="text":
             content=xml.find("Content").text
-            response.resp_text(self.render,myid,userid,content)
+            return response.resp_text(self.render,myid,userid,content)
         elif msgtype=="event":
             event = xml.find("Event").text
             if event=='subscribe' or event=='unsubscribe':
-                response.resp_event(self.render,event,myid,userid)
+                return response.resp_event(self.render,event,myid,userid)
             elif event=='CLICK':
                 eventkey = xml.find('EventKey')
-                response.resp_menu_event(self.render,myid,userid,eventkey.text)
+                return response.resp_menu_event(self.render,myid,userid,eventkey.text)
