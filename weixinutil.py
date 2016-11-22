@@ -4,6 +4,10 @@ import urllib2
 # import urllib
 from Contant import APPID,APPSECRET,MENU
 import json
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 
 access_token="I6-cIxDex7duOdC2guHhDWQftd9doaFw6GOo_JoSj3EOqvtZ5MOUqbgwWzglNL-yPZvzf3RKVqFpDQz9d9q0L1TnOoHJCWAQa4jKk27HSRsYXFaAGAFEM"
 

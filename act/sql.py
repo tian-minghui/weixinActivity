@@ -1,8 +1,10 @@
 # coding=utf-8
 import MySQLdb
-
-
 import activity, user
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 
 '''
 sae.const.MYSQL_DB      # 数据库名

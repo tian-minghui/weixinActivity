@@ -5,7 +5,9 @@ from Contant import Token
 import hashlib
 from xml.etree import ElementTree
 import response
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 class WeixinRequest:  # 响应请求的类
     def __init__(self):

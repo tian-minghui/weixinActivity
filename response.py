@@ -3,6 +3,9 @@ import time
 
 import Contant
 from act import activity, user, sql
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 def get_time():
