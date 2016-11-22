@@ -90,12 +90,14 @@ class mysql:
         if count == 0:
             return
         result = self.cur.fetchall()[0]
+        print result
         act = activity.activity(act_id)
-        act.title = result[1]
-        act.date = result[2]
-        act.num = result[3]
-        act.id_list = result[4].split()
-        act.remark = result[5]
+        act.create_userid=result[1]
+        act.title = result[2]
+        act.date = result[3]
+        act.num = int(result[4])
+        act.id_list = result[5].split()
+        act.remark = result[6]
         self.close()
         return act
 
@@ -144,10 +146,12 @@ class mysql:
 
 if __name__ == '__main__':
     # print mysql().get_max_actid()
-    u= mysql().select_user('o6ngQv5DAxoOoABubGsPCYLynFFc')
-    u.create_act_list.append(4)
-    print u.create_act_list
-    mysql().update_user(u)
+    # u= mysql().select_user('o6ngQv5DAxoOoABubGsPCYLynFFc')
+    # u.create_act_list.append(4)
+    # print u.create_act_list
+    # mysql().update_user(u)
+    act=mysql().select_act(5)
+    print act,act.title,act.remark
 
 # def create_act_table():
 #     sql='''create table IF NOT EXISTS Activity(

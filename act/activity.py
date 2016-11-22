@@ -17,14 +17,23 @@ class activity:
         self.remark=''  # 活动备注
 
 
+def md_act_id(act_id):
+    id_length=6
+    s=str(act_id)
+    id=''
+    for i in range(id_length-len(s)):
+        id+='0'
+    return id+s
+
+
 def create_act(userid,content):
     # 创建活动
     l=content.split()
     if len(l)!=3:
-        msg=str(len(l))
-        for i in l:
-            msg+=i
-        return '你输入的信息格式有误！%s'%msg
+        # msg=str(len(l))
+        # for i in l:
+        #     msg+=i
+        return '你输入的信息格式有误！'
     else:
         title=l[1]
         remark=l[2]
@@ -42,7 +51,7 @@ def create_act(userid,content):
         u= sql.mysql().select_user(userid)
         u.create_act_list.append(act_id)
         sql.mysql().update_user(u, flag=0)
-        return str(act_id)
+        return md_act_id(act_id)
 
 
 def show_act(act):
@@ -67,6 +76,9 @@ def join_act(userid,content):
     act.id_list.append(userid)
     sql.mysql().update_act(act, id_list=True)
     u= sql.mysql().select_user(userid)
-    u.join_act_list.append(act_id)
+    u.join_act_list.append(act.act_id)
     sql.mysql().update_user(u, flag=1)
     return show_act(act)
+
+if __name__ == '__main__':
+    print md_act_id(1)
