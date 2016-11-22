@@ -76,7 +76,7 @@ class mysql:
             sql = "update Activity set title='%s' where act_id=%d" % (act.title, act.act_id)
             self.cur.execute(sql)
         if id_list:
-            sql = "update Activity set id_list='%s',num=%d where act_id=%d" % (act.id_list, act.num + 1, act.act_id)
+            sql = "update Activity set id_list='%s',num=%d where act_id=%d" % (' '.join(act.id_list), act.num + 1, act.act_id)
             self.cur.execute(sql)
         if remark:
             sql = "update Activity set remark='%s' where act_id=%d" % (act.remark, act.act_id)
@@ -150,8 +150,11 @@ if __name__ == '__main__':
     # u.create_act_list.append(4)
     # print u.create_act_list
     # mysql().update_user(u)
-    act=mysql().select_act(5)
-    print act,act.title,act.remark
+    # act=mysql().select_act(5)
+    # print act,act.title,act.remark
+    act=activity.activity(6)
+    act.id_list=['o6ngQv5DAxoOoABubGsPCYLynFFc','isjdighsudghskg']
+    mysql().update_act(act,id_list=True)
 
 # def create_act_table():
 #     sql='''create table IF NOT EXISTS Activity(

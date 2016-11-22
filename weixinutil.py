@@ -10,7 +10,7 @@ sys.setdefaultencoding('utf-8')
 
 
 access_token="I6-cIxDex7duOdC2guHhDWQftd9doaFw6GOo_JoSj3EOqvtZ5MOUqbgwWzglNL-yPZvzf3RKVqFpDQz9d9q0L1TnOoHJCWAQa4jKk27HSRsYXFaAGAFEM"
-
+errcode_token=[42001,41001,40014]
 
 def update_token():
     global access_token
@@ -39,7 +39,7 @@ def update_menu():
     errcode=info.get('errcode')
     if errcode==0:
         print '更新菜单成功'
-    elif errcode==40014 or errcode==41001:
+    elif errcode in errcode_token:
         update_token()
         update_menu()
     else:
@@ -52,7 +52,7 @@ def get_user_info(userid):
     info=json.loads(response.read())
     if 'errcode' in info.keys():
         errcode=info.get('errcode')
-        if errcode==40014:
+        if errcode in errcode_token:
             update_token()
             return get_user_info(userid)
         else:
@@ -72,29 +72,29 @@ def get_mutiluser_info(userid_list):
         "user_list":[]
     }
     for userid in userid_list:
-        dic_json[userid_list].append({'openid':userid, "lang": "zh-CN"})
+        dic_json['user_list'].append({'openid':userid, "lang": "zh-CN"})
 
     req=urllib2.Request(url)
     req.add_header('Content-Type', 'application/json')
     req.add_header('encoding', 'utf-8')
-    response=urllib2.urlopen(req,json.dumps(dic_json,ensure_ascii=False))
+    response=urllib2.urlopen(req,json.dumps(dic_json))
     info=json.loads(response.read())
     if 'errcode' in info.keys():
         errcode = info.get('errcode')
-        if errcode == 40014:
+        if errcode in errcode_token:
             update_token()
             return get_mutiluser_info(userid_list)
         else:
             raise RuntimeError('获取用户列表信息出错：%d' % errcode)
     else:
-        name_dic=dict()
+        name_list=[]
         for user in info.get('user_info_list'):
             if user.get('subscribe')==1:
-                openid=user.get('openid')
+                # openid=user.get('openid')
                 nickname= user.get('nickname')
-                name_dic[openid]=nickname
-        return name_dic
+                name_list.append(nickname)
+        return name_list
 
 
 if __name__ == '__main__':
-    update_menu()
+    print get_mutiluser_info(['o6ngQv5DAxoOoABubGsPCYLynFFc','o6ngQv2BwJipHSaHN8_m-RTTT3nw'])

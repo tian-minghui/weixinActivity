@@ -1,2 +1,4 @@
 # coding=utf-8
-print int('00001')
+s='join 000006'
+l=s.strip().split()
+print int(l[1])

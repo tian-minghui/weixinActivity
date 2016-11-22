@@ -4,17 +4,9 @@ import time
 import Contant
 from act import activity, user, sql
 import sys
+# import tools
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
-
-def get_time():
-    TIMEFORMAT = '%Y-%m-%d %X'
-    return time.strftime(TIMEFORMAT)
-
-
-def time_sec_to_str(time_sec):
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time_sec))
 
 
 def resp_menu_event(render,myid,userid,eventkey):

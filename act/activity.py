@@ -2,6 +2,8 @@
 import sql
 import time
 import sys
+import weixinutil
+import tools
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -55,12 +57,16 @@ def create_act(userid,content):
 
 
 def show_act(act):
+    create_name=weixinutil.get_user_info(act.create_userid)
+    join_name_list=weixinutil.get_mutiluser_info(act.id_list)
     msg='''活动标题：%s
-创建人：%s
+创建人：
+%s
 创建日期：%s
 参与人数：%d
-报名人:%s
-'''%(act.title,act.create_userid,act.date,act.num,' '.join(act.id_list))
+报名人:
+%s
+'''%(act.title,create_name,tools.time_sec_to_str(act.date),act.num,' '.join(join_name_list))
     return msg
 
 
