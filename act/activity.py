@@ -60,13 +60,14 @@ def show_act(act):
     create_name=weixinutil.get_user_info(act.create_userid)
     join_name_list=weixinutil.get_mutiluser_info(act.id_list)
     msg='''活动标题：%s
-创建人：
-%s
+活动id:%s
+备注：%s
+创建人：%s
 创建日期：%s
 参与人数：%d
 报名人:
 %s
-'''%(act.title,create_name,tools.time_sec_to_str(act.date),act.num,' '.join(join_name_list))
+'''%(act.title,md_act_id(act.act_id),act.remark,create_name,tools.time_sec_to_str(act.date),act.num,' '.join(join_name_list))
     return msg
 
 
